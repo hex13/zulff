@@ -6,6 +6,7 @@ const canvasApp = new CanvasApp({
 	width: 1024,
 	height: 768,
 });
+canvasApp.debug = true;
 
 container.appendChild(canvasApp.domElement);
 

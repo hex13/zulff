@@ -25,13 +25,22 @@ export class Turtle {
 		this.rotation = 0;
 		this.thickness(1);
 		this.isDown = true;
+		this.min = {x: Infinity, y: Infinity};
+		this.max = {x: -Infinity, y: -Infinity};
+	}
+	moveTo(newPosition) {
+		this.prevPosition = this.position;
+		this.position = newPosition;
+		if (newPosition.x < this.min.x) this.min.x = newPosition.x;
+		if (newPosition.x > this.max.x) this.max.x = newPosition.x;
+		if (newPosition.y < this.min.y) this.min.y = newPosition.y;
+		if (newPosition.y > this.max.y) this.max.y = newPosition.y;
 	}
 	forward(amount) {
-		this.prevPosition = this.position;
-		this.position = {
-			x: this.prevPosition.x + Math.cos(this.rotation) * amount,
-			y: this.prevPosition.y + Math.sin(this.rotation) * amount,
-		};
+		this.moveTo({
+			x: this.position.x + Math.cos(this.rotation) * amount,
+			y: this.position.y + Math.sin(this.rotation) * amount,
+		});
 		if (this.isDown && this.onLine) {
 			this.onLine(this.prevPosition, this.position);
 		}
@@ -78,6 +87,7 @@ export class CanvasApp {
 		this.domElement = canvas;
 		this.root = new Shape();
 		this.turtle = this.createTurtle();
+		this.debug = false;
 	}
 	createTurtle() {
 		const turtle = new Turtle();
@@ -106,6 +116,10 @@ export class CanvasApp {
 		this.ctx.scale(shape.scale.x, shape.scale.y)
 		this.turtle.reset();
 		shape.render(this.ctx, this.turtle);
+		if (this.debug) {
+			this.ctx.fillStyle = 'rgb(255 255 255 / 0.2)';
+			this.ctx.fillRect(this.turtle.min.x, this.turtle.min.y, this.turtle.max.x - this.turtle.min.x, this.turtle.max.y - this.turtle.min.y);
+		}
 		shape.children.forEach(child => {
 			this.renderShape(child);
 		});

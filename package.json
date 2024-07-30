@@ -1,0 +1,11 @@
+{
+  "name": "zulff",
+  "version": "0.1.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "bun test"
+  },
+  "author": "Łukasz Lityński",
+  "license": "MIT"
+}

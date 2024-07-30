@@ -33,8 +33,8 @@ const spyTurtle = (turtle) => {
 	return events;
 };
 
-describe('Zulff', () => {
-	it('Turtle', () => {
+describe('Turtle', () => {
+	it('lines', () => {
 		const turtle = new Turtle();
 		const events = spyTurtle(turtle);
 

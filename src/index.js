@@ -9,6 +9,18 @@ const canvasApp = new CanvasApp({
 
 container.appendChild(canvasApp.domElement);
 
+const drawHouse = (turtle) => {
+	const size = 30;
+	const height = size * 0.6;
+	turtle.thickness(2);
+	turtle.down();
+	turtle.rectangle(size, height);
+	turtle.turn(-Math.PI * 0.25);
+	turtle.forward(Math.sqrt(2) * size * 0.5);
+	turtle.turn(Math.PI * 0.5);
+	turtle.forward(Math.sqrt(2) * size * 0.5);
+};
+
 canvasApp.root = new Shape((ctx, turtle) => {
 
 	for (let i = 0; i < 10; i++) {
@@ -47,6 +59,9 @@ const child = new Shape((ctx, turtle) => {
 
 canvasApp.root.children.push(child);
 
+canvasApp.root.children.push(new Shape((ctx, turtle) => {
+	drawHouse(turtle);
+}));
 canvasApp.render();
 
 setInterval(() => {

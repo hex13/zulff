@@ -44,6 +44,7 @@ export class Turtle {
 	}
 	turn(angle) {
 		this.rotation += angle;
+		this.rotation = this.rotation % (Math.PI * 2);
 	}
 	drawPoint() {
 		this.onDrawPoint && this.onDrawPoint(this.position, 5, 5);
@@ -53,6 +54,16 @@ export class Turtle {
 	}
 	thickness(newThickness) {
 		this.onThickness && this.onThickness(newThickness);
+	}
+	rectangle(width, height) {
+		this.forward(width);
+		this.turn(Math.PI * 0.5);
+		this.forward(height);
+		this.turn(Math.PI * 0.5);
+		this.forward(width);
+		this.turn(Math.PI * 0.5);
+		this.forward(height);
+		this.turn(Math.PI * 0.5);
 	}
 }
 

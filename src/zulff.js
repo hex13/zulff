@@ -39,6 +39,9 @@ export class Turtle {
 		this.isDown = true;
 		this.min = {x: Infinity, y: Infinity};
 		this.max = {x: -Infinity, y: -Infinity};
+		this.lines = [];
+		this.currThickness = 1;
+		this.currColor = 'white';
 	}
 	moveTo(newPosition) {
 		this.prevPosition = this.position;
@@ -54,7 +57,12 @@ export class Turtle {
 			y: this.position.y + Math.sin(this.rotation) * amount,
 		});
 		if (this.isDown && this.onLine) {
-			this.onLine(this.prevPosition, this.position);
+			this.lines.push({
+				from: this.prevPosition,
+				to: this.position,
+				color: this.currColor,
+				thickness: this.currThickness,
+			});
 		}
 	}
 	up() {
@@ -71,10 +79,11 @@ export class Turtle {
 		this.onDrawPoint && this.onDrawPoint(this.position, 5, 5);
 	}
 	color(newColor) {
-		this.onColor && this.onColor(newColor);
+		this.currColor = newColor;
 	}
 	thickness(newThickness) {
 		this.onThickness && this.onThickness(newThickness);
+		this.currThickness = newThickness;
 	}
 	rectangle(width, height) {
 		this.forward(width);
@@ -85,6 +94,13 @@ export class Turtle {
 		this.turn(Math.PI * 0.5);
 		this.forward(height);
 		this.turn(Math.PI * 0.5);
+	}
+	flush() {
+		this.lines.forEach((line) => {
+			this.onColor && this.onColor(line.color);
+			this.onThickness && this.onThickness(line.thickness);
+			this.onLine(line.from, line.to);
+		});
 	}
 }
 
@@ -128,6 +144,7 @@ export class CanvasApp {
 		this.ctx.scale(shape.scale.x, shape.scale.y)
 		this.turtle.reset();
 		shape.render(this.ctx, this.turtle);
+		this.turtle.flush();
 		if (this.debug) shape.renderBoundingBox(this.ctx);
 		shape.children.forEach(child => {
 			this.renderShape(child);

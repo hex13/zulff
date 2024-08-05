@@ -42,6 +42,7 @@ describe('Turtle', () => {
 		turtle.forward(10);
 		turtle.turn(Math.PI * 0.5);
 		turtle.forward(1);
+		turtle.flush();
 		assert.deepStrictEqual(events, [
 			['onLine', {x: 0, y: 0}, {x: 10, y: 0}],
 			['onLine', {x: 10, y: 0}, {x: 20, y: 0}],

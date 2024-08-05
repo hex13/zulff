@@ -16,6 +16,15 @@ export class Shape {
 		this.min = {...turtle.min};
 		this.max = {...turtle.max};
 	}
+	renderBoundingBox(ctx) {
+		ctx.fillStyle = this.hit? 'rgb(255 255 200 / 0.5)' : 'rgb(255 255 255 / 0.2)';
+		ctx.fillRect(this.min.x, this.min.y, this.max.x - this.min.x, this.max.y - this.min.y);
+		ctx.fillStyle = 'yellow';
+		const axisSize = 16;
+		ctx.fillRect(-axisSize / 2, 0, axisSize, 2);
+		ctx.fillRect(0, -axisSize / 2, 2, axisSize);
+	}
+
 }
 
 export class Turtle {
@@ -119,10 +128,7 @@ export class CanvasApp {
 		this.ctx.scale(shape.scale.x, shape.scale.y)
 		this.turtle.reset();
 		shape.render(this.ctx, this.turtle);
-		if (this.debug) {
-			this.ctx.fillStyle = 'rgb(255 255 255 / 0.2)';
-			this.ctx.fillRect(this.turtle.min.x, this.turtle.min.y, this.turtle.max.x - this.turtle.min.x, this.turtle.max.y - this.turtle.min.y);
-		}
+		if (this.debug) shape.renderBoundingBox(this.ctx);
 		shape.children.forEach(child => {
 			this.renderShape(child);
 		});

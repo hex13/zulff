@@ -5,13 +5,16 @@ export class Shape {
 	children = [];
 	constructor(onRender, position) {
 		if (onRender) {
-			this.render = onRender;
+			this.onRender = onRender;
 		}
 		if (position) {
 			this.position = position;
 		}
 	}
-	render(ctx) {
+	render(ctx, turtle) {
+		this.onRender && this.onRender(ctx, turtle);
+		this.min = {...turtle.min};
+		this.max = {...turtle.max};
 	}
 }
 
